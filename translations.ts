@@ -55,6 +55,10 @@ export const translate = {
         "en": "Close",
         "ru": "Закрыть"
     },
+    "button_back": {
+        "en": "Back",
+        "ru": "Назад"
+    },
     "lastTransactions": {
         "en": "Last transactions",
         "ru": "Последние транзакции"
