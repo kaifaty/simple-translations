@@ -47,6 +47,10 @@ export const translate = {
         "en": "Connect wallet",
         "ru": "Подключить кошелек"
     },
+    "button_disconnectWallet": {
+        "en": "Disconnect wallet",
+        "ru": "Отсоединить кошелек"
+    },
     "button_close": {
         "en": "Close",
         "ru": "Закрыть"
