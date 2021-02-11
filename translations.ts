@@ -59,6 +59,10 @@ export const translate = {
         "en": "Back",
         "ru": "Назад"
     },
+    "button_connect": {
+        "en": "Connect",
+        "ru": "Подключить"
+    },
     "lastTransactions": {
         "en": "Last transactions",
         "ru": "Последние транзакции"
