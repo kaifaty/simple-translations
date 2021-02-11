@@ -43,6 +43,10 @@ export const translate = {
         "en": "Confirm",
         "ru": "Подтверждено"
     },
+    "button_connectWallet": {
+        "en": "Connect wallet",
+        "ru": "Подключить кошелек"
+    },
     "button_close": {
         "en": "Close",
         "ru": "Закрыть"
@@ -95,6 +99,7 @@ export const translate = {
         "en": "Choose file",
         "ru": "Выбрать файл"
     },
+
     get(key: string, lang: string, values? : {[key: string]: string}){
         let res = this[key]?.[lang] || this[key]?.en || key
         if(values){
