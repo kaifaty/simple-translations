@@ -75,11 +75,11 @@ export const translate = {
         "en": "This is not a recommended way to access your wallet. Due to confidential information, these options should only be used in clean system and browser without any extensions by experienced users.",
         "ru": "Это нерекомендуемый способ доступа к вашему кошельку. Из-за конфиденциальной информации эти параметры должны использоваться только в чистой системе и браузере без каких-либо расширений опытными пользователями."
     },
-    "privateKey": {
+    "privatekey": {
         "en": "Private key",
         "ru": "Приватный ключ"
     },
-    "privateKey_placeholder": {
+    "privatekey_placeholder": {
         "en": "Enter your private key",
         "ru": "Введите ваш приватный ключ"
     },
