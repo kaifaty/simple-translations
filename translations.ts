@@ -117,7 +117,10 @@ export const translate = {
     },
 
     get(key: string, lang: string, values? : {[key: string]: string}){
-        let res = this[key]?.[lang] || this[key]?.en || key
+        const path = key.split('.');
+        const v = path.reduce((a, k) => a[k], this) || this?.common[key]
+
+        let res = v?.[lang] || v?.en || key
         if(values){
             return  res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m: string, n: string) => {
                 return values[n] !== undefined ? values[n] : m;
