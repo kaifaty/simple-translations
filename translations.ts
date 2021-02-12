@@ -111,6 +111,10 @@ export const translate = {
         "en": "Choose file",
         "ru": "Выбрать файл"
     },
+    "nodata": {
+        "en": "No data",
+        "ru": "Нет данных"
+    },
 
     get(key: string, lang: string, values? : {[key: string]: string}){
         let res = this[key]?.[lang] || this[key]?.en || key
