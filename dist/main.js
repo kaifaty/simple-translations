@@ -23,7 +23,7 @@ export class Translate {
         const path = key.split('.');
         let v = {};
         try {
-            v = (path.reduce((a, k) => a[k], this) ||
+            v = (path.reduce((a, k) => a[k], this.data) ||
                 (path.length > 1
                     ? path.slice(1).reduce((a, k) => a[k], this.data.common)
                     : path.reduce((a, k) => a === null || a === void 0 ? void 0 : a[k], this.data.common)));
