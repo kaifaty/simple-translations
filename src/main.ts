@@ -29,12 +29,12 @@ export class Translate{
     get(key: string, lang: string, values? : {[key: string]: string}){
         if(!key) return '';
         const path = key.split('.');
-        let v: {[key: string]: string} = {};
+        let v: Record<string, any> = {};
         try{
-            v = path.reduce((a, k) => a[k], this) ||
+            v = (path.reduce((a, k) => a[k], this) ||
                 (path.length > 1
                     ? path.slice(1).reduce((a, k) => a[k], this.data.common)
-                    : path.reduce((a, k) => a?.[k], this.data.common));
+                    : path.reduce((a, k) => a?.[k], this.data.common))) as Record<string, any>;
         }
         catch(e){
             return key;

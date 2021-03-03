@@ -1,0 +1,6 @@
+{
+  "include": ["src/**/*"],
+  "strict": true,
+  "declarations": true,
+  "importHelpers": true
+}
