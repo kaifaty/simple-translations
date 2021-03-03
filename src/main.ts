@@ -35,10 +35,8 @@ export class Translate{
                 (path.length > 1
                     ? path.slice(1).reduce((a, k) => a[k], this.data.common)
                     : path.reduce((a, k) => a?.[k], this.data.common))) as Record<string, any>;
-            console.log(v);
         }
         catch(e){
-            console.log(e);
             return key;
         }
 

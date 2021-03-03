@@ -27,10 +27,8 @@ export class Translate {
                 (path.length > 1
                     ? path.slice(1).reduce((a, k) => a[k], this.data.common)
                     : path.reduce((a, k) => a === null || a === void 0 ? void 0 : a[k], this.data.common)));
-            console.log(v);
         }
         catch (e) {
-            console.log(e);
             return key;
         }
         let res = (v === null || v === void 0 ? void 0 : v[lang]) || (v === null || v === void 0 ? void 0 : v.en) || key;
