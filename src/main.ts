@@ -31,7 +31,7 @@ export class Translate{
         const path = key.split('.');
         let v: Record<string, any> = {};
         try{
-            v = (path.reduce((a, k) => a[k], this) ||
+            v = (path.reduce((a, k) => a[k], this.data) ||
                 (path.length > 1
                     ? path.slice(1).reduce((a, k) => a[k], this.data.common)
                     : path.reduce((a, k) => a?.[k], this.data.common))) as Record<string, any>;
