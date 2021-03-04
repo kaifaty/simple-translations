@@ -10,4 +10,3 @@ export declare class Translate {
         [key: string]: string;
     }): any;
 }
-//# sourceMappingURL=main.d.ts.map
