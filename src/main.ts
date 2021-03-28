@@ -3,6 +3,7 @@ export interface ITranslationStorage {
 }
 
 export class Translate{
+    lang: string = 'en';
     data: ITranslationStorage
     constructor(data?: ITranslationStorage) {
         if(data){
@@ -25,8 +26,7 @@ export class Translate{
             }
         })
     }
-
-    get(key: string, lang: string, values? : {[key: string]: string}){
+    get(key: string, values? : {[key: string]: string}){
         if(!key) return '';
         const path = key.split('.');
         let v: Record<string, any> = {};
@@ -40,9 +40,9 @@ export class Translate{
             return key;
         }
 
-        let res = v?.[lang] || v?.en || key
+        let res = v?.[this.lang] || v?.en || key
         res = res.replace(/\[([a-zA-Z0-9_.,=)( ]+)\]/g, (m: string, n: string) => {
-            return this.get(n, lang, values);
+            return this.get(n, values);
         });
         if(values){
             return res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m: string, n: string) => {
