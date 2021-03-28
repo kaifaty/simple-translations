@@ -1,20 +1,24 @@
 {
-  "name": "ktranslations",
-  "version": "1.0.0",
+  "name": "simple-translations",
+  "version": "1.0.1",
   "description": "Translations",
-  "private": true,
-  "main": "dist/main.js",
+  "main": "src/main.ts",
+  "files": [
+    "/src/"
+  ],
+  "homepage": "https://github.com/kaifaty/simple-translations#readme",
+  "bugs": {
+    "url": "https://github.com/kaifaty/simple-translations/issues"
+  },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "build": "parcel build example.ts --out-file example.js",
-    "watch": "parcel example.ts --out-file example.js",
     "tsc": "tsc"
   },
   "browserslist": [
     "since 2017-06"
   ],
-  "author": "",
-  "license": "ISC",
+  "keywords": [],
+  "author": "kaifaty",
+  "license": "MIT",
   "devDependencies": {
     "typescript": "^4.2.2"
   },
