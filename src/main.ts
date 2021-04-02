@@ -4,7 +4,7 @@ export interface ITranslationStorage {
 
 export class Translate{
     lang: string = 'en';
-    data: ITranslationStorage
+    data: ITranslationStorage = {}
     constructor(data?: ITranslationStorage) {
         if(data){
             this.setStorage(data);
@@ -26,23 +26,35 @@ export class Translate{
             }
         })
     }
-    get(key: string, values? : {[key: string]: string}){
+
+    private _checkPath(path: string[], point: ITranslationStorage = this.data): ITranslationStorage | null{
+        let res: ITranslationStorage = point;
+        for(const v of path){
+            if(res[v] === undefined) return null;
+            if(typeof res[v] === 'string') return null;
+            res = res[v] as ITranslationStorage;
+        }
+        return null;
+    }
+    get(key: string, lang: string, values? : {[key: string]: string}): string{
         if(!key) return '';
         const path = key.split('.');
-        let v: Record<string, any> = {};
-        try{
-            v = (path.reduce((a, k) => a[k], this.data) ||
-                (path.length > 1
-                    ? path.slice(1).reduce((a, k) => a[k], this.data.common)
-                    : path.reduce((a, k) => a?.[k], this.data.common))) as Record<string, any>;
+        let v: ITranslationStorage | null = this._checkPath(path);
+
+        if(!v && typeof this.data.common === "object") {
+            v = this._checkPath(path, this.data.common) 
+                || this._checkPath(path.slice(1), this.data.common)
         }
-        catch(e){
+        if(!v){
             return key;
         }
 
-        let res = v?.[this.lang] || v?.en || key
+        let res = v?.[lang] || v?.en || key;
+        if(typeof res !== 'string'){
+            return key;
+        }
         res = res.replace(/\[([a-zA-Z0-9_.,=)( ]+)\]/g, (m: string, n: string) => {
-            return this.get(n, values);
+            return this.get(n, lang, values);
         });
         if(values){
             return res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m: string, n: string) => {
