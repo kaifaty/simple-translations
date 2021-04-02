@@ -3,7 +3,6 @@ export interface ITranslationStorage {
 }
 
 export class Translate{
-    lang: string = 'en';
     data: ITranslationStorage = {}
     constructor(data?: ITranslationStorage) {
         if(data){
@@ -34,7 +33,7 @@ export class Translate{
             if(typeof res[v] === 'string') return null;
             res = res[v] as ITranslationStorage;
         }
-        return null;
+        return res;
     }
     get(key: string, lang: string, values? : {[key: string]: string}): string{
         if(!key) return '';
@@ -43,7 +42,7 @@ export class Translate{
 
         if(!v && typeof this.data.common === "object") {
             v = this._checkPath(path, this.data.common) 
-                || this._checkPath(path.slice(1), this.data.common)
+              || this._checkPath(path.slice(1), this.data.common)
         }
         if(!v){
             return key;

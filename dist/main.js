@@ -1,6 +1,5 @@
 export class Translate {
     constructor(data) {
-        this.lang = 'en';
         this.data = {};
         if (data) {
             this.setStorage(data);
@@ -28,7 +27,7 @@ export class Translate {
                 return null;
             res = res[v];
         }
-        return null;
+        return res;
     }
     get(key, lang, values) {
         if (!key)

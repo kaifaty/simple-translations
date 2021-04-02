@@ -2,7 +2,6 @@ export interface ITranslationStorage {
     [key: string]: string | ITranslationStorage;
 }
 export declare class Translate {
-    lang: string;
     data: ITranslationStorage;
     constructor(data?: ITranslationStorage);
     setStorage(data: ITranslationStorage): void;
