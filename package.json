@@ -1,10 +1,20 @@
 {
   "name": "simple-translations",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Translations",
-  "main": "src/main.ts",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "typesVersions": {
+    "<3.8": {
+      "*": [
+        "ts3.4/*"
+      ]
+    }
+  },
   "files": [
-    "/src/"
+    "/src/",
+    "/dist/"
   ],
   "homepage": "https://github.com/kaifaty/simple-translations#readme",
   "bugs": {
