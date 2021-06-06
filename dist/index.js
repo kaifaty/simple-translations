@@ -46,7 +46,7 @@ export class Translate {
             return key;
         }
         if (values) {
-            return res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m, n) => {
+            res = res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m, n) => {
                 if (values[n] !== undefined) {
                     return values[n];
                 }
