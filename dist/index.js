@@ -29,7 +29,7 @@ export class Translate {
         }
         return res;
     }
-    get(key, lang, values) {
+    get(key, lang, values, replaceToEmpty = false) {
         if (!key)
             return '';
         const path = key.split('.');
@@ -45,14 +45,17 @@ export class Translate {
         if (typeof res !== 'string') {
             return key;
         }
+        if (values) {
+            return res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m, n) => {
+                if (values[n] !== undefined) {
+                    return values[n];
+                }
+                return replaceToEmpty ? '' : m;
+            });
+        }
         res = res.replace(/\[([a-zA-Z0-9_.,=)( ]+)\]/g, (m, n) => {
             return this.get(n, lang, values);
         });
-        if (values) {
-            return res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m, n) => {
-                return values[n] !== undefined ? values[n] : m;
-            });
-        }
         return res;
     }
 }

@@ -35,7 +35,11 @@ export class Translate{
         }
         return res;
     }
-    get(key: string, lang: string, values? : {[key: string]: string}): string{
+    get(key: string, 
+        lang: string, 
+        values? : {[key: string]: string},
+        replaceToEmpty: boolean = false
+    ): string{
         if(!key) return '';
         const path = key.split('.');
         let v: ITranslationStorage | null = this._checkPath(path);
@@ -52,14 +56,17 @@ export class Translate{
         if(typeof res !== 'string'){
             return key;
         }
+        if(values){
+            return res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m: string, n: string) => {
+                if(values[n] !== undefined){
+                    return values[n];
+                }
+                return replaceToEmpty ? '' : m;
+            });
+        }
         res = res.replace(/\[([a-zA-Z0-9_.,=)( ]+)\]/g, (m: string, n: string) => {
             return this.get(n, lang, values);
         });
-        if(values){
-            return res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m: string, n: string) => {
-                return values[n] !== undefined ? values[n] : m;
-            });
-        }
         return res;
     }
 }

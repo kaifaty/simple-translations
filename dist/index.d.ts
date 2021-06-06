@@ -9,5 +9,5 @@ export declare class Translate {
     private _checkPath;
     get(key: string, lang: string, values?: {
         [key: string]: string;
-    }): string;
+    }, replaceToEmpty?: boolean): string;
 }
