@@ -1,7 +1,9 @@
 export interface ITranslationStorage {
     [key: string] : string | ITranslationStorage
 }
-
+interface TValues {
+    [key: string]: string | number | TValues
+}
 export class Translate{
     data: ITranslationStorage = {}
     constructor(data?: ITranslationStorage) {
@@ -37,8 +39,8 @@ export class Translate{
     }
     get(key: string, 
         lang: string, 
-        values? : {[key: string]: string},
-        replaceToEmpty: boolean = false
+        values? :  TValues,
+        replaceToEmpty: boolean = false,
     ): string{
         if(!key) return '';
         const path = key.split('.');
@@ -58,8 +60,9 @@ export class Translate{
         }
         if(values){
             res = res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m: string, n: string) => {
-                if(values[n] !== undefined){
-                    return values[n];
+                const v = getValue(n, values);
+                if (v !== undefined) {
+                    return v;
                 }
                 return replaceToEmpty ? '' : m;
             });
@@ -69,4 +72,14 @@ export class Translate{
         });
         return res;
     }
+}
+
+function getValue(key: string, values: TValues): string{
+    const path = key.split('.');
+    let v: string | number | TValues = values;
+    for(const subkey of path){
+        v = values[subkey];
+        if(!v) break;
+    }
+    return v.toString();
 }

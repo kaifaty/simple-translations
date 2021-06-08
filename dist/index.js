@@ -47,8 +47,9 @@ export class Translate {
         }
         if (values) {
             res = res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m, n) => {
-                if (values[n] !== undefined) {
-                    return values[n];
+                const v = getValue(n, values);
+                if (v !== undefined) {
+                    return v;
                 }
                 return replaceToEmpty ? '' : m;
             });
@@ -58,4 +59,14 @@ export class Translate {
         });
         return res;
     }
+}
+function getValue(key, values) {
+    const path = key.split('.');
+    let v = values;
+    for (const subkey of path) {
+        v = values[subkey];
+        if (!v)
+            break;
+    }
+    return v.toString();
 }
