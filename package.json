@@ -1,6 +1,6 @@
 {
   "name": "simple-translations",
-  "version": "1.0.10",
+  "version": "1.0.11",
   "description": "Translations",
   "main": "dist/index.js",
   "module": "dist/index.js",

@@ -74,12 +74,13 @@ export class Translate{
     }
 }
 
-function getValue(key: string, values: TValues): string{
-    const path = key.split('.');
+function getValue(key: string, values: TValues): string | undefined{
+    const path: string[] = key.split('.');
     let v: string | number | TValues = values;
     for(const subkey of path){
-        v = values[subkey];
-        if(!v) break;
+        v = v[subkey];
+        if(typeof v !== 'object') break;
     }
+    if(v === undefined) return undefined;
     return v.toString();
 }
