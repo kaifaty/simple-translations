@@ -54,7 +54,7 @@ export class Translate {
                 return replaceToEmpty ? '' : m;
             });
         }
-        res = res.replace(/\[([a-zA-Z0-9_.,=)( ]+)\]/g, (m, n) => {
+        res = res.replace(/\[([a-zA-Z0-9_.,=)(]+)\]/g, (m, n) => {
             return this.get(n, lang, values);
         });
         return res;
@@ -64,9 +64,11 @@ function getValue(key, values) {
     const path = key.split('.');
     let v = values;
     for (const subkey of path) {
-        v = values[subkey];
-        if (!v)
+        v = v[subkey];
+        if (typeof v !== 'object')
             break;
     }
+    if (v === undefined)
+        return undefined;
     return v.toString();
 }

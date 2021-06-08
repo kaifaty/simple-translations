@@ -67,7 +67,7 @@ export class Translate{
                 return replaceToEmpty ? '' : m;
             });
         }
-        res = res.replace(/\[([a-zA-Z0-9_.,=)( ]+)\]/g, (m: string, n: string) => {
+        res = res.replace(/\[([a-zA-Z0-9_.,=)(]+)\]/g, (m: string, n: string) => {
             return this.get(n, lang, values);
         });
         return res;
