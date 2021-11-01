@@ -29,35 +29,45 @@ export class Translate {
         }
         return res;
     }
-    get(key, lang, values, replaceToEmpty = false) {
+    get(key, lang, values, replaceToEmpty = false, replacers) {
         if (!key)
             return '';
         const path = key.split('.');
         let v = this._checkPath(path);
         if (!v && typeof this.data.common === "object") {
-            v = this._checkPath(path, this.data.common)
-                || this._checkPath(path.slice(1), this.data.common);
+            v = this._checkPath(path, this.data.common) ||
+                this._checkPath(path.slice(1), this.data.common);
         }
-        if (!v) {
+        if (v === undefined) {
             return key;
         }
-        let res = (v === null || v === void 0 ? void 0 : v[lang]) || (v === null || v === void 0 ? void 0 : v.en) || key;
+        let res = (v === null || v === void 0 ? void 0 : v[lang]) || ((v === null || v === void 0 ? void 0 : v.en) !== undefined ? v === null || v === void 0 ? void 0 : v.en : key);
         if (typeof res !== 'string') {
             return key;
         }
-        if (values) {
-            res = res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m, n) => {
-                const v = getValue(n, values);
-                if (v !== undefined) {
-                    return v;
-                }
-                return replaceToEmpty ? '' : m;
-            });
-        }
-        res = res.replace(/\[([a-zA-Z0-9_.,=)(]+)\]/g, (m, n) => {
-            return this.get(n, lang, values);
+        res = res.replace(/\[([a-zA-Z0-9}{_.,=)(]+)\]/g, (m, n) => {
+            n = this._replace(n, replaceToEmpty, values, replacers);
+            if ((replacers === null || replacers === void 0 ? void 0 : replacers[m]) !== undefined) {
+                return replacers === null || replacers === void 0 ? void 0 : replacers[m](this.get(n, lang, values, replaceToEmpty, replacers));
+            }
+            return this.get(n, lang, values, replaceToEmpty);
         });
+        res = this._replace(res, replaceToEmpty, values, replacers);
         return res;
+    }
+    _replace(str, replaceToEmpty = false, values, replacers) {
+        if (!values)
+            return str;
+        return str.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m, n) => {
+            const v = getValue(n, values);
+            if (v !== undefined) {
+                if (replacers === null || replacers === void 0 ? void 0 : replacers[m]) {
+                    return replacers === null || replacers === void 0 ? void 0 : replacers[m](v);
+                }
+                return v;
+            }
+            return replaceToEmpty ? '' : m;
+        });
     }
 }
 function getValue(key, values) {

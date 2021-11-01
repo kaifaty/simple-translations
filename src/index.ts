@@ -4,6 +4,11 @@ export interface ITranslationStorage {
 interface TValues {
     [key: string]: string | number | TValues
 }
+
+export interface IReplacers {
+    [key: string]: (key: string) => string
+}
+
 export class Translate{
     data: ITranslationStorage = {}
     constructor(data?: ITranslationStorage) {
@@ -41,36 +46,51 @@ export class Translate{
         lang: string, 
         values? :  TValues,
         replaceToEmpty: boolean = false,
+        replacers?: IReplacers
     ): string{
         if(!key) return '';
         const path = key.split('.');
         let v: ITranslationStorage | null = this._checkPath(path);
 
         if(!v && typeof this.data.common === "object") {
-            v = this._checkPath(path, this.data.common) 
-              || this._checkPath(path.slice(1), this.data.common)
+            v = this._checkPath(path, this.data.common) || 
+            this._checkPath(path.slice(-1), this.data.common)
         }
-        if(!v){
-            return key;
+        if(v === undefined){
+            return '';
         }
-
-        let res = v?.[lang] || v?.en || key;
+        let res = v?.[lang] || (v?.en !== undefined ? v?.en : key);
         if(typeof res !== 'string'){
-            return key;
+            return '';
         }
-        if(values){
-            res = res.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m: string, n: string) => {
-                const v = getValue(n, values);
-                if (v !== undefined) {
-                    return v;
-                }
-                return replaceToEmpty ? '' : m;
-            });
-        }
-        res = res.replace(/\[([a-zA-Z0-9_.,=)(]+)\]/g, (m: string, n: string) => {
-            return this.get(n, lang, values);
+        res = res.replace(/\[([a-zA-Z0-9}{_.,=)(]+)\]/g, (m: string, n: string) => {
+            n = this._replace(n, replaceToEmpty, values, replacers);
+            if(replacers?.[m] !== undefined){
+                return replacers?.[m](this.get(n, lang, values, replaceToEmpty, replacers));
+            }
+            return this.get(n, lang, values, replaceToEmpty);            
         });
+        res = this._replace(res, replaceToEmpty, values, replacers);
         return res;
+    }
+    _replace(
+        str: string, 
+        replaceToEmpty: boolean = false,
+        values? :  TValues, 
+        replacers?: IReplacers
+    ){
+        if(!values) return str;
+        return str.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m: string, n: string) => {
+            const v = getValue(n, values);
+                          
+            if (v !== undefined) {                        
+                if(replacers?.[m]){
+                    return replacers?.[m](v)
+                }
+                return v;
+            }
+            return replaceToEmpty ? '' : m;
+        });
     }
 }
 
