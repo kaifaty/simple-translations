@@ -36,14 +36,14 @@ export class Translate {
         let v = this._checkPath(path);
         if (!v && typeof this.data.common === "object") {
             v = this._checkPath(path, this.data.common) ||
-                this._checkPath(path.slice(1), this.data.common);
+                this._checkPath(path.slice(-1), this.data.common);
         }
         if (v === undefined) {
-            return key;
+            return '';
         }
         let res = (v === null || v === void 0 ? void 0 : v[lang]) || ((v === null || v === void 0 ? void 0 : v.en) !== undefined ? v === null || v === void 0 ? void 0 : v.en : key);
         if (typeof res !== 'string') {
-            return key;
+            return '';
         }
         res = res.replace(/\[([a-zA-Z0-9}{_.,=)(]+)\]/g, (m, n) => {
             n = this._replace(n, replaceToEmpty, values, replacers);
