@@ -36,6 +36,7 @@ export class Translate {
         let v = this._checkPath(path);
         if (!v && typeof this.data.common === "object") {
             v = this._checkPath(path, this.data.common) ||
+                this._checkPath(path.slice(1), this.data.common) ||
                 this._checkPath(path.slice(-1), this.data.common);
         }
         if (v === undefined) {
