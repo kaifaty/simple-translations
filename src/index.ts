@@ -10,7 +10,8 @@ export interface IReplacers {
 }
 
 export class Translate{
-    data: ITranslationStorage = {}
+    data: ITranslationStorage = {};
+    variables: TValues | null = null;
     constructor(data?: ITranslationStorage) {
         if(data){
             this.setStorage(data);
@@ -80,9 +81,11 @@ export class Translate{
         values? :  TValues, 
         replacers?: IReplacers
     ){
-        if(!values) return str;
+        if(!values && !this.variables) return str;
         return str.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m: string, n: string) => {
-            const v = getValue(n, values);
+            const v = values && getValue(n, values) || 
+                      this.variables && getValue(n, this.variables) || 
+                      undefined;
                           
             if (v !== undefined) {                        
                 if(replacers?.[m]){

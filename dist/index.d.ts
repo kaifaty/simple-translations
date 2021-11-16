@@ -9,6 +9,7 @@ export interface IReplacers {
 }
 export declare class Translate {
     data: ITranslationStorage;
+    variables: TValues | null;
     constructor(data?: ITranslationStorage);
     setStorage(data: ITranslationStorage): void;
     appendStorage(data: ITranslationStorage): void;

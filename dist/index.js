@@ -1,6 +1,7 @@
 export class Translate {
     constructor(data) {
         this.data = {};
+        this.variables = null;
         if (data) {
             this.setStorage(data);
         }
@@ -57,10 +58,12 @@ export class Translate {
         return res;
     }
     _replace(str, replaceToEmpty = false, values, replacers) {
-        if (!values)
+        if (!values && !this.variables)
             return str;
         return str.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m, n) => {
-            const v = getValue(n, values);
+            const v = values && getValue(n, values) ||
+                this.variables && getValue(n, this.variables) ||
+                undefined;
             if (v !== undefined) {
                 if (replacers === null || replacers === void 0 ? void 0 : replacers[m]) {
                     return replacers === null || replacers === void 0 ? void 0 : replacers[m](v);
