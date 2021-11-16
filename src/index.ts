@@ -50,6 +50,12 @@ export class Translate{
         replacers?: IReplacers
     ): string{
         if(!key) return '';
+        if(!values && this.variables){
+            values = {domain: this.variables} as Record<string, any>;
+        }
+        else if(!values?.domain && this.variables){
+            values = {...values, domain: this.variables};
+        }
         const path = key.split('.');
         let v: ITranslationStorage | null = this._checkPath(path);
 
@@ -81,11 +87,9 @@ export class Translate{
         values? :  TValues, 
         replacers?: IReplacers
     ){
-        if(!values && !this.variables) return str;
+        if(!values) return str;
         return str.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m: string, n: string) => {
-            const v = values && getValue(n, values) || 
-                      this.variables && getValue(n, this.variables) || 
-                      undefined;
+            const v = values && getValue(n, values);
                           
             if (v !== undefined) {                        
                 if(replacers?.[m]){

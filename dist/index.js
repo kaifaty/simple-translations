@@ -33,6 +33,12 @@ export class Translate {
     get(key, lang, values, replaceToEmpty = false, replacers) {
         if (!key)
             return '';
+        if (!values && this.variables) {
+            values = { domain: this.variables };
+        }
+        else if (!(values === null || values === void 0 ? void 0 : values.domain) && this.variables) {
+            values = Object.assign(Object.assign({}, values), { domain: this.variables });
+        }
         const path = key.split('.');
         let v = this._checkPath(path);
         if (!v && typeof this.data.common === "object") {
@@ -58,12 +64,10 @@ export class Translate {
         return res;
     }
     _replace(str, replaceToEmpty = false, values, replacers) {
-        if (!values && !this.variables)
+        if (!values)
             return str;
         return str.replace(/\{([a-zA-Z0-9_.,=)( ]+)\}/g, (m, n) => {
-            const v = values && getValue(n, values) ||
-                this.variables && getValue(n, this.variables) ||
-                undefined;
+            const v = values && getValue(n, values);
             if (v !== undefined) {
                 if (replacers === null || replacers === void 0 ? void 0 : replacers[m]) {
                     return replacers === null || replacers === void 0 ? void 0 : replacers[m](v);
